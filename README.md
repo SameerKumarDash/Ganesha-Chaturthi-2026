@@ -2,11 +2,7 @@
 
 A separate Python/Blender experiment in which a devotional Ganesha drawing manifests stroke by stroke inside a procedural 3D universe. The camera, tubes, stars, planets, galaxies, clouds, drawing point and attracted dust are dynamically evaluated by Blender's Eevee Next engine. No background video, image sequence, image fade, paid API, downloaded artwork or runtime network access is used.
 
-**Confirmed project location:** `D:\SaMMaaNs_InfoTech_Innovations_And_Products\Ganesha Chaturthi 2026`. This supersedes the earlier `tests\Ganesha Animation` location following the user's explicit clarification. Nothing here imports or modifies VAYUNA.
-
-![Completed manifestation](output/sculptural_075.00s.png)
-
-The image above is a validation render of the live scene, not a runtime asset.
+Released under the [MIT License](LICENSE). Contributions and forks are welcome.
 
 ## Default SCULPTURAL style (continued implementation)
 
@@ -25,14 +21,16 @@ Manifestation order follows the timeline phases: crown → head/ears → eyelids
 
 ## Quick start
 
-Double-click **run_animation.bat**, or run these exact PowerShell commands:
+1. Install [Python 3.10+](https://www.python.org/downloads/) and [Blender 4.5 LTS](https://www.blender.org/download/lts/4-5/) (see [Requirements](#requirements-and-blender-installation)). Blender is **not** included in this repository.
+2. Clone the project and launch it. On Windows you can also double-click **run_animation.bat**.
 
 ```powershell
-Set-Location 'D:\SaMMaaNs_InfoTech_Innovations_And_Products\Ganesha Chaturthi 2026'
+git clone https://github.com/SameerKumarDash/Ganesha-Chaturthi-2026.git
+Set-Location Ganesha-Chaturthi-2026
 python launcher.py
 ```
 
-The launcher builds a fresh scene, enters rendered camera view, and starts playback. The first shader compilation can take several seconds. LOW is the default because this machine reports integrated Intel graphics.
+The launcher builds a fresh scene, enters rendered camera view, and starts playback. The first shader compilation can take several seconds. On integrated graphics, start with `--quality LOW`.
 
 ```powershell
 # Verify the executable without launching the scene
@@ -52,18 +50,21 @@ python launcher.py --background --quality LOW --validate --debug --save --render
 python -m unittest discover -s tests -v
 ```
 
-The saved project is `output\divine_ganesha.blend`. It contains baked animation, Geometry Nodes and simple time drivers. Opening it directly requires no scene-building scripts. Custom F3 controls are registered by `launcher.py` / `main.py`; they are not installed globally. Native Blender controls still work when opening the `.blend` directly.
+`--save` writes `output\divine_ganesha.blend` (generated locally; `output/` is not tracked in git). It contains baked animation, Geometry Nodes and simple time drivers. Opening it directly requires no scene-building scripts. Custom F3 controls are registered by `launcher.py` / `main.py`; they are not installed globally. Native Blender controls still work when opening the `.blend` directly.
 
 ## Requirements and Blender installation
 
-- Standard Python **3.10+** for the launcher and tests. Tested with Python 3.14 on this machine.
+- Standard Python **3.10+** for the launcher and tests. Tested with Python 3.14.
 - **Blender 4.2–4.5**, Eevee Next. Actually tested with **Blender 4.5.9 LTS**. Other 4.x versions in that range are compatibility targets, not separately certified. Blender 4.0/4.1 and 5.x are rejected with a diagnostic.
 - A graphics driver capable of running Eevee Next. More GPU memory improves higher quality modes.
 - No pip packages, virtual environment, audio package, or network service required.
 
-A portable Blender 4.5.9 distribution is included locally in `tools\blender-4.5.9-windows-x64`. It was downloaded from the [official Blender archive](https://download.blender.org/release/Blender4.5/) and checked against its published SHA-256. The ZIP checksum is `41da973b9bf95bb312cbeff4d1982feb13259b43c821686b9bafea4dfe5477cf`.
+Blender is not bundled in this repository (it is over 1 GB). Pick either option:
 
-For another machine, obtain a Windows portable ZIP from the [Blender 4.5 LTS release page](https://www.blender.org/releases/4-5/) and extract it under this project's `tools` folder, or install Blender normally. [Official Windows installation instructions](https://docs.blender.org/manual/en/4.5/getting_started/installing/windows.html) describe both options.
+- **Install Blender normally** from the [Blender 4.5 LTS release page](https://www.blender.org/releases/4-5/). The launcher finds it automatically in `C:\Program Files\Blender Foundation\` or on your PATH.
+- **Portable:** download the Windows portable ZIP from the [official Blender archive](https://download.blender.org/release/Blender4.5/) and extract it into this project's `tools` folder so that `tools\blender-4.5.x-windows-x64\blender.exe` exists. That folder is git-ignored. The tested ZIP (4.5.9) has SHA-256 `41da973b9bf95bb312cbeff4d1982feb13259b43c821686b9bafea4dfe5477cf`.
+
+[Official Windows installation instructions](https://docs.blender.org/manual/en/4.5/getting_started/installing/windows.html) describe both options.
 
 Executable lookup order is explicit `--blender`, `BLENDER_EXE`, PATH, project-local portable Blender, then conventional Blender Foundation installation directories:
 
@@ -116,7 +117,7 @@ The launcher directs Blender user resources and temporary files into the project
 | `tools/inspect_blender.py` | Small API diagnostic used to inspect Blender 4.5 compositor sockets. |
 | `output/` | Generated `.blend`, preview images, validation logs, timing records and isolation status snapshots. |
 
-Package `__init__.py` files keep imports explicit. `requirements.txt` documents the absence of pip dependencies. `.gitignore` excludes downloaded runtimes, generated output and Python caches. `IMPLEMENTATION_REPORT.md` records the completed work; `FILE_MANIFEST.txt` inventories files, including the portable runtime distribution.
+Package `__init__.py` files keep imports explicit. `requirements.txt` documents the absence of pip dependencies. `.gitignore` excludes downloaded runtimes, generated output and Python caches. `IMPLEMENTATION_REPORT.md` records the completed work; `tools/write_manifest.py` can generate a local `FILE_MANIFEST.txt` inventory.
 
 ## Vector source, import and 3D conversion
 
@@ -228,7 +229,7 @@ The unit suite exercises bundled JSON loading, malformed data, cubic extraction,
 
 The Blender integration check evaluates actual tube meshes, hidden future strokes, halfway reveal, exact tip location at multiple anatomical stages, completed persistence, body invisibility before manifestation, final camera/galaxy motion, upright camera, valid drivers, file-texture independence and actual animated particle instances. Run it through `launcher.py --background --validate`; do not import `bpy` tests through ordinary Python.
 
-Validation images at 0, 18, 31, 66 and 75 seconds are in `output`. `shape_validation.png` is the earlier curve-only milestone. Final motion is also tested by comparing evaluated transforms at different times. The completed file can be re-opened and scrubbed without running scene creation again.
+Running the validation command with `--render-seconds 0 18 31 66 75` writes still images at those times into `output`. Final motion is also tested by comparing evaluated transforms at different times. The completed file can be re-opened and scrubbed without running scene creation again.
 
 ## Troubleshooting
 

@@ -7,6 +7,10 @@ from config import ROOT
 from ganesha.path_loader import load_paths,extract_points
 
 class PathLoaderTests(unittest.TestCase):
+    @classmethod
+    def setUpClass(cls):
+        (ROOT/'output').mkdir(exist_ok=True)  # git-ignored, so absent on a fresh clone
+
     def load(self,obj):
         with tempfile.TemporaryDirectory(dir=ROOT/'output') as folder:
             p=Path(folder)/'fixture.json'; p.write_text(json.dumps(obj))
