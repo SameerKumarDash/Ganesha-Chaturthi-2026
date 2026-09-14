@@ -1,0 +1,3 @@
+# No pip packages required. Blender supplies bpy and mathutils.
+# Standard Python 3.10+ runs launcher and unit tests.
+# Blender 4.2-4.5 runs the scene; tested with portable Blender 4.5.9 LTS.

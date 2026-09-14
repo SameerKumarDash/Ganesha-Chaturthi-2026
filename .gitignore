@@ -1,0 +1,6 @@
+__pycache__/
+*.pyc
+tools/blender*/
+tools/blender.zip
+tools/user/
+output/
